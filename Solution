@@ -7,5 +7,15 @@ def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
     return df2[['name','bonus']]
 
 ------------------------------------------------------------------------------------------------------------------------
+8) ARTICLE VIEWS I
+import pandas as pd
+
+def article_views(views: pd.DataFrame) -> pd.DataFrame:
+    result_df=views[views['author_id']==views['viewer_id']].drop_duplicates(subset=['author_id'],keep='first').sort_values(by='author_id').rename(columns={'author_id':'id'})
+    # result_df.drop_duplicates(subset=['author_id'],keep='first',inplace=True)
+    # result_df.sort_values(by='author_id',inplace=True)
+    # result_df.rename(columns={'author_id':'id'},inplace=True)
+    return result_df[['id']]
+
 
 
