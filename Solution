@@ -1,1 +1,7 @@
+7) EMPLOYEE BONUS
+import pandas as pd
 
+def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
+    result_df=pd.merge(employee,bonus,left_on='empId',right_on='empId',how='left')
+    df2= result_df[(result_df['bonus']<1000) | (result_df['bonus'].isna())]
+    return df2[['name','bonus']]
