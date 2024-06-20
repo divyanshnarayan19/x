@@ -16,6 +16,9 @@ def article_views(views: pd.DataFrame) -> pd.DataFrame:
     # result_df.sort_values(by='author_id',inplace=True)
     # result_df.rename(columns={'author_id':'id'},inplace=True)
     return result_df[['id']]
+------------------------------------------------------------------------------------------------------------------------
+9) import pandas as pd
 
-
+def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
+    return tweets[tweets['content'].str.len() > 15][['tweet_id']]
 
