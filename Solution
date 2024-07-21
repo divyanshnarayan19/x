@@ -50,3 +50,10 @@ def rearrange_products_table(products: pd.DataFrame) -> pd.DataFrame:
 def total_time(employees: pd.DataFrame) -> pd.DataFrame:
     employees['time_spent']=employees['out_time']-employees['in_time']
     return employees.groupby(['event_day','emp_id'])['time_spent'].sum().reset_index().rename(columns={'event_day':'day','time_spent':'total_time'})
+------------------------------------------------------------------------------------------------------------------------
+15) import pandas as pd
+
+def count_unique_subjects(teacher: pd.DataFrame) -> pd.DataFrame:
+    return teacher.drop_duplicates(subset=['teacher_id','subject_id']).groupby(['teacher_id'])['subject_id'].nunique().reset_index().rename(columns={'subject_id':'cnt'})
+------------------------------------------------------------------------------------------------------------------------
+    
