@@ -45,3 +45,8 @@ def rearrange_products_table(products: pd.DataFrame) -> pd.DataFrame:
     results_df=products.melt(id_vars=['product_id'],value_vars=['store1','store2','store3'],var_name='store',value_name='price').dropna()
     return results_df
 ------------------------------------------------------------------------------------------------------------------------
+14) import pandas as pd
+
+def total_time(employees: pd.DataFrame) -> pd.DataFrame:
+    employees['time_spent']=employees['out_time']-employees['in_time']
+    return employees.groupby(['event_day','emp_id'])['time_spent'].sum().reset_index().rename(columns={'event_day':'day','time_spent':'total_time'})
