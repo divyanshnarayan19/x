@@ -56,4 +56,8 @@ def total_time(employees: pd.DataFrame) -> pd.DataFrame:
 def count_unique_subjects(teacher: pd.DataFrame) -> pd.DataFrame:
     return teacher.drop_duplicates(subset=['teacher_id','subject_id']).groupby(['teacher_id'])['subject_id'].nunique().reset_index().rename(columns={'subject_id':'cnt'})
 ------------------------------------------------------------------------------------------------------------------------
-    
+16) import pandas as pd
+
+def find_classes(courses: pd.DataFrame) -> pd.DataFrame:
+    df=courses.groupby(['class'])[['student']].count().reset_index()
+    return df[df['student']>=5][['class']]    
