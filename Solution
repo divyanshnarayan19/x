@@ -61,3 +61,11 @@ def count_unique_subjects(teacher: pd.DataFrame) -> pd.DataFrame:
 def find_classes(courses: pd.DataFrame) -> pd.DataFrame:
     df=courses.groupby(['class'])[['student']].count().reset_index()
     return df[df['student']>=5][['class']]    
+------------------------------------------------------------------------------------------------------------------------
+17) import pandas as pd
+
+def largest_orders(orders: pd.DataFrame) -> pd.DataFrame:
+    df=orders.groupby(['customer_number'])[['order_number']].count().reset_index().rename(columns={'order_number':'order_count'})
+    return df[df['order_count']==df['order_count'].max()][['customer_number']]
+
+------------------------------------------------------------------------------------------------------------------------
