@@ -69,3 +69,19 @@ def largest_orders(orders: pd.DataFrame) -> pd.DataFrame:
     return df[df['order_count']==df['order_count'].max()][['customer_number']]
 
 ------------------------------------------------------------------------------------------------------------------------
+18) import pandas as pd
+
+def categorize_products(activities: pd.DataFrame) -> pd.DataFrame:
+    df=activities.groupby(['sell_date'])['product'].apply(lambda x:sorted(x.unique())).reset_index()
+    df['num_sold']=df['product'].apply(len)
+    df['products']=df['product'].apply(lambda x:','.join(x))
+    df.drop(columns=['product'],inplace=True)
+    return df
+------------------------------------------------------------------------------------------------------------------------
+19) import pandas as pd
+
+def daily_leads_and_partners(daily_sales: pd.DataFrame) -> pd.DataFrame:
+    return daily_sales.groupby(['date_id','make_name']).agg(
+        unique_leads=('lead_id',lambda x:x.nunique()),
+        unique_partners=('partner_id',lambda x: x.nunique())
+        ).reset_index()
