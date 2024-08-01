@@ -100,6 +100,14 @@ Output:
 | Henry     |
 | Max       |
 +-----------+
+
+# Sample data
+customers_data = {'id': [1, 2, 3, 4], 'name': ['Joe', 'Henry', 'Sam', 'Max']}
+orders_data = {'id': [1, 2], 'customerId': [3, 1]}
+
+# Create DataFrames
+customers_df = pd.DataFrame(customers_data)
+orders_df = pd.DataFrame(orders_data)
 _____________________________________________________________________________________________________________________________________________________
 3) DUPLICATE EMAILS
 Table: Person
