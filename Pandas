@@ -141,6 +141,15 @@ Output:
 | a@b.com |
 +---------+
 Explanation: a@b.com is repeated two times.
+
+data = [
+    {'id': 1, 'email': 'a@b.com'},
+    {'id': 2, 'email': 'c@d.com'},
+    {'id': 3, 'email': 'a@b.com'}
+]
+
+# Convert the list of dictionaries to a DataFrame
+df = pd.DataFrame(data)
 _____________________________________________________________________________________________________________________________________________________
 4) DELETE DUPLICATE EMAILS
 Write a solution to delete all duplicate emails, keeping only one unique email with the smallest id.
