@@ -1,0 +1,56 @@
+/**
+ * LOWESS smoothing in Google Sheets
+ * @param {range} xRange - X values (e.g., traffic ratio)
+ * @param {range} yRange - Y values (e.g., sales ratio)
+ * @param {number} frac - fraction of data to use as local window (e.g., 0.3)
+ * @return {Array} Smoothed Y values
+ * @customfunction
+ */
+function LOWESS(xRange, yRange, frac) {
+  const x = xRange.flat().map(Number);
+  const y = yRange.flat().map(Number);
+  const n = x.length;
+  const r = Math.floor(frac * n);
+  const ySmooth = [];
+
+  for (let i = 0; i < n; i++) {
+    const x0 = x[i];
+
+    // Compute distances
+    const distances = x.map((xi, j) => [Math.abs(xi - x0), j]);
+    distances.sort((a, b) => a[0] - b[0]);
+
+    // Select nearest r neighbors
+    const neighbors = distances.slice(0, r).map(d => d[1]);
+    const maxDist = distances[r - 1][0];
+
+    // Apply tricube weights
+    const weights = new Array(n).fill(0);
+    neighbors.forEach(j => {
+      const d = Math.abs(x[j] - x0) / maxDist;
+      const w = (1 - Math.pow(d, 3)) ** 3;
+      weights[j] = w;
+    });
+
+    // Weighted linear regression
+    let sumW = 0, sumWX = 0, sumWY = 0, sumWXX = 0, sumWXY = 0;
+    for (let j = 0; j < n; j++) {
+      const w = weights[j];
+      sumW += w;
+      sumWX += w * x[j];
+      sumWY += w * y[j];
+      sumWXX += w * x[j] * x[j];
+      sumWXY += w * x[j] * y[j];
+    }
+
+    // Solve for beta (slope) and alpha (intercept)
+    const denom = sumW * sumWXX - sumWX * sumWX;
+    const beta = denom !== 0 ? (sumW * sumWXY - sumWX * sumWY) / denom : 0;
+    const alpha = denom !== 0 ? (sumWY * sumWXX - sumWX * sumWXY) / denom : 0;
+
+    const yi = alpha + beta * x0;
+    ySmooth.push([yi]);
+  }
+
+  return ySmooth;
+}
