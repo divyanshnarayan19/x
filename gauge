@@ -1,15 +1,25 @@
-function showGaugeChart() {
-  const html = HtmlService.createHtmlOutputFromFile('GaugeChart')
-    .setTitle('Custom Gauge Chart')
-    .setWidth(600);
+function showSearchDemandGauge() {
+  const html = HtmlService.createHtmlOutputFromFile('SearchGauge')
+    .setTitle('Search Demand Gauge')
+    .setWidth(500);
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
-function getGaugeData() {
+function getSearchGaugeData() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const data = sheet.getRange("A2:B5").getValues();
-  return data;
+  const value = sheet.getRange("B2").getValue(); // Search Demand actual value
+  const thresholds = sheet.getRange("E2:E4").getValues().flat(); // Red, Yellow, Green max
+
+  return {
+    value: value,
+    thresholds: {
+      redMax: thresholds[0],
+      yellowMax: thresholds[1],
+      greenMax: thresholds[2]
+    }
+  };
 }
+
 ----------------------------------------------------------------
 
 <!DOCTYPE html>
@@ -22,32 +32,36 @@ function getGaugeData() {
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        google.script.run.withSuccessHandler(function(dataArray) {
-          const data = new google.visualization.DataTable();
-          data.addColumn('string', 'Label');
-          data.addColumn('number', 'Value');
-          data.addRows(dataArray);
+        google.script.run.withSuccessHandler(function(result) {
+          const data = google.visualization.arrayToDataTable([
+            ['Label', 'Value'],
+            ['Search', result.value]
+          ]);
+
+          const thresholds = result.thresholds;
 
           const options = {
-            width: 500,
-            height: 300,
+            width: 400,
+            height: 200,
             redFrom: 0,
-            redTo: 93,
-            yellowFrom: 93,
-            yellowTo: 117,
-            greenFrom: 117,
-            greenTo: 150,
+            redTo: thresholds.redMax,
+            yellowFrom: thresholds.redMax,
+            yellowTo: thresholds.yellowMax,
+            greenFrom: thresholds.yellowMax,
+            greenTo: thresholds.greenMax,
+            max: thresholds.greenMax,
             minorTicks: 5,
-            max: 150
+            animation: { duration: 800, easing: 'out' }
           };
 
           const chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
           chart.draw(data, options);
-        }).getGaugeData();
+        }).getSearchGaugeData();
       }
     </script>
   </head>
   <body>
-    <div id="gauge_div" style="width: 500px; height: 300px;"></div>
+    <h3 style="text-align:center;">Search Demand</h3>
+    <div id="gauge_div" style="width: 100%; height: 220px;"></div>
   </body>
 </html>
