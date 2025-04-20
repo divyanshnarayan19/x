@@ -1,67 +1,106 @@
-function showSearchDemandGauge() {
-  const html = HtmlService.createHtmlOutputFromFile('SearchGauge')
-    .setTitle('Search Demand Gauge')
-    .setWidth(500);
+function showThresholdGauge() {
+  const html = HtmlService.createHtmlOutputFromFile('ThresholdGauge')
+    .setTitle('Threshold Gauge')
+    .setWidth(600);
   SpreadsheetApp.getUi().showSidebar(html);
 }
 
-function getSearchGaugeData() {
+function getThresholdGaugeData() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  const value = sheet.getRange("B2").getValue(); // Search Demand actual value
-  const thresholds = sheet.getRange("E2:E4").getValues().flat(); // Red, Yellow, Green max
+  const value = sheet.getRange("B1").getValue();     // Actual
+  const target = sheet.getRange("B2").getValue();    // Target
+  const redMax = sheet.getRange("B3").getValue();
+  const yellowMax = sheet.getRange("B4").getValue();
+  const greenMax = sheet.getRange("B5").getValue();
 
   return {
-    value: value,
-    thresholds: {
-      redMax: thresholds[0],
-      yellowMax: thresholds[1],
-      greenMax: thresholds[2]
-    }
+    value, target,
+    redMax, yellowMax, greenMax
   };
 }
 
 ----------------------------------------------------------------
-
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-      google.charts.load('current', {'packages':['gauge']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        google.script.run.withSuccessHandler(function(result) {
-          const data = google.visualization.arrayToDataTable([
-            ['Label', 'Value'],
-            ['Search', result.value]
-          ]);
-
-          const thresholds = result.thresholds;
-
-          const options = {
-            width: 400,
-            height: 200,
-            redFrom: 0,
-            redTo: thresholds.redMax,
-            yellowFrom: thresholds.redMax,
-            yellowTo: thresholds.yellowMax,
-            greenFrom: thresholds.yellowMax,
-            greenTo: thresholds.greenMax,
-            max: thresholds.greenMax,
-            minorTicks: 5,
-            animation: { duration: 800, easing: 'out' }
-          };
-
-          const chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
-          chart.draw(data, options);
-        }).getSearchGaugeData();
+    <style>
+      #gauge_container {
+        width: 500px;
+        height: 300px;
+        margin: auto;
+        position: relative;
       }
-    </script>
+      #needle, #target_marker {
+        width: 3px;
+        height: 120px;
+        background: red;
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform-origin: bottom;
+        z-index: 2;
+      }
+      #target_marker {
+        background: black;
+        height: 100px;
+      }
+      #value_label {
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 230px;
+        color: #444;
+      }
+    </style>
   </head>
   <body>
-    <h3 style="text-align:center;">Search Demand</h3>
-    <div id="gauge_div" style="width: 100%; height: 220px;"></div>
+    <div id="gauge_container">
+      <canvas id="gauge_bg" width="500" height="250"></canvas>
+      <div id="needle"></div>
+      <div id="target_marker"></div>
+    </div>
+    <div id="value_label"></div>
+
+    <script>
+      google.script.run.withSuccessHandler(drawGauge).getThresholdGaugeData();
+
+      function drawGauge(data) {
+        const { value, target, redMax, yellowMax, greenMax } = data;
+
+        const canvas = document.getElementById("gauge_bg");
+        const ctx = canvas.getContext("2d");
+
+        const cx = 250, cy = 250, radius = 120;
+
+        // Helper: map value to radians (180° gauge)
+        const toAngle = (v) => Math.PI * (1 - (v / greenMax));
+
+        function drawArc(startVal, endVal, color) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, radius, toAngle(startVal), toAngle(endVal), false);
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 20;
+          ctx.stroke();
+        }
+
+        // Draw zones
+        drawArc(0, redMax, "#FF4C4C"); // Red
+        drawArc(redMax, yellowMax, "#FFC107"); // Yellow
+        drawArc(yellowMax, greenMax, "#4CAF50"); // Green
+
+        // Draw actual value needle
+        const needle = document.getElementById("needle");
+        const needleDeg = 180 * (1 - value / greenMax);
+        needle.style.transform = `rotate(${needleDeg}deg)`;
+
+        // Draw target marker
+        const targetMarker = document.getElementById("target_marker");
+        const targetDeg = 180 * (1 - target / greenMax);
+        targetMarker.style.transform = `rotate(${targetDeg}deg)`;
+
+        // Label
+        document.getElementById("value_label").innerText = `$${value.toLocaleString()}`;
+      }
+    </script>
   </body>
 </html>
