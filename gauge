@@ -1,0 +1,53 @@
+function showGaugeChart() {
+  const html = HtmlService.createHtmlOutputFromFile('GaugeChart')
+    .setTitle('Custom Gauge Chart')
+    .setWidth(600);
+  SpreadsheetApp.getUi().showSidebar(html);
+}
+
+function getGaugeData() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const data = sheet.getRange("A2:B5").getValues();
+  return data;
+}
+----------------------------------------------------------------
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        google.script.run.withSuccessHandler(function(dataArray) {
+          const data = new google.visualization.DataTable();
+          data.addColumn('string', 'Label');
+          data.addColumn('number', 'Value');
+          data.addRows(dataArray);
+
+          const options = {
+            width: 500,
+            height: 300,
+            redFrom: 0,
+            redTo: 93,
+            yellowFrom: 93,
+            yellowTo: 117,
+            greenFrom: 117,
+            greenTo: 150,
+            minorTicks: 5,
+            max: 150
+          };
+
+          const chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
+          chart.draw(data, options);
+        }).getGaugeData();
+      }
+    </script>
+  </head>
+  <body>
+    <div id="gauge_div" style="width: 500px; height: 300px;"></div>
+  </body>
+</html>
