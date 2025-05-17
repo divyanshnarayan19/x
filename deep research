@@ -1,0 +1,41 @@
+
+
+I want you to do a deep research and find out the on-shelf or, say, the date when these products became available for each of these partners. Also, tell me if there was any pre-order allowed and if the pre-order was allowed, tell me the pre-order start date and pre-order end date. Also, I want to know what was the launch promo. For example, say, for Pixel 9a, I think some of the retail partners were giving out Fitbit 9 as a free gift. For some of the previous launches, it was Pixel Buds. So, I want to know what was the launch promo for each of these retail partners. And I also want to understand what was the duration of the launch promo when it started and when it ended. Also, tell me about any other activity that the competitors, which are Samsung and Apple, were doing during the launch period of Pixel A-series phones. So, basically, I want information for each of these retail partners for Pixel 9a, Pixel 8a, and Pixel 7a. And give me all the above information I asked for in a tabular format for each of these retail partners and for each of these the phone model launches, that is, Pixel 9a, Pixel 8a, and Pixel 7a for each of these retail partners. Share your output in a tabular format. Also, in the same tabular format, add any other partner offers that were available with the launch and what was the start date and end date of the partner offers. For instance, Vodafone had offered, I think, some bundle package with free airtime with Pixel 8a launch. So, I want that kind of information as well. Give all the information in a tabular format. Share any interesting insights that you can gather. Do a deep research and prepare a very comprehensive report. I want everything to be very super accurate. 
+
+ "Country": "Germany",
+        "Retailer Name": "MediaMarkt",
+        "Model": "Pixel 9a",
+        "On-Shelf Date": "10 Apr 2025",
+        "Pre-order allowed (Yes/No)": "Yes",
+        "Pre-Order Window": "03–09 Apr 2025",
+        "Launch Promotion": "Free Pixel Buds A + €100 trade-in bonus",
+        "Promo Period": "03–20 Apr 2025",
+        "Partner Offers": "0% financing, additional accessories discount",
+        "Partner offer promo period": "03–30 Apr 2025",
+        "Effective price after promotions": "€549 – €100 bonus = €449",
+        "Competitor Activity": "Samsung Galaxy A56 launch overlap; iPhone SE 2024 pricing cuts",
+        "Competitor phones (Samsung & Apple)": "Galaxy A56, iPhone SE 2024",
+        "Offer on competitor phones": "Galaxy A56 with trade-in promo; iPhone SE with plan subsidies",
+        "Effective price of competitor phones after offer": "Galaxy A56 ~€399; iPhone SE ~€499",
+        "Partner campaign messaging (EN)": "AI at your fingertips. Only with Pixel.",
+        "Customer reviews": "4.7★ avg (MediaMarkt)",
+        "Any other useful information": "Coral color exclusive to Google Store"
+
+"Country": "France",
+        "Retailer Name": "Fnac/Darty",
+        "Model": "Pixel 7a",
+        "On-Shelf Date": "10 May 2023",
+        "Pre-order allowed (Yes/No)": "No",
+        "Pre-Order Window": "N/A",
+        "Launch Promotion": "Free Pixel Buds A-Series",
+        "Promo Period": "10–22 May 2023",
+        "Partner Offers": "5% back for Fnac+ members",
+        "Partner offer promo period": "Same as promo",
+        "Effective price after promotions": "€509 (buds worth €99)",
+        "Competitor Activity": "Samsung Galaxy A54 launched Mar 2023; iPhone SE still in market",
+        "Competitor phones (Samsung & Apple)": "Galaxy A54, iPhone SE (2022)",
+        "Offer on competitor phones": "Galaxy A54 with Buds2; iPhone SE sold with contract discounts",
+        "Effective price of competitor phones after offer": "Galaxy A54 ~€390, iPhone SE ~€519",
+        "Partner campaign messaging (EN)": "Pixel 7a + Buds – 100% Google smartphone at best value",
+        "Customer reviews": "4.5★ (Fnac)",
+        "Any other useful information": "0% financing available; Google Coral color not offered"
